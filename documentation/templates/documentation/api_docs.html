@@ -1,0 +1,118 @@
+{% extends 'documentation/base.html' %}
+
+{% block title %}API Documentation - Blinkit Seller Center{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>API Documentation</h2>
+    <p>Complete reference for all REST and SOAP API endpoints in the Blinkit Seller Center.</p>
+    
+    <div class="filter-section">
+        <form method="get" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <select name="protocol" onchange="this.form.submit()">
+                <option value="">All Protocols</option>
+                {% for protocol in protocols %}
+                <option value="{{ protocol }}" {% if protocol == current_protocol %}selected{% endif %}>{{ protocol }}</option>
+                {% endfor %}
+            </select>
+            
+            <select name="app" onchange="this.form.submit()">
+                <option value="">All Apps</option>
+                {% for app in apps %}
+                <option value="{{ app }}" {% if app == current_app %}selected{% endif %}>{{ app|title }}</option>
+                {% endfor %}
+            </select>
+            
+            {% if current_protocol or current_app %}
+            <a href="{% url 'documentation:api_docs' %}" class="button">Clear Filters</a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% regroup endpoints by app_name as app_groups %}
+
+{% for app_group in app_groups %}
+<div class="card">
+    <h2>{{ app_group.grouper|title }} API</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Protocol</th>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for endpoint in app_group.list %}
+            <tr>
+                <td><span class="badge badge-{{ endpoint.protocol|lower }}">{{ endpoint.protocol }}</span></td>
+                <td><span class="badge badge-{{ endpoint.method|lower }}">{{ endpoint.method }}</span></td>
+                <td><code>{{ endpoint.path }}</code></td>
+                <td>{{ endpoint.description|truncatewords:15 }}</td>
+                <td><a href="{% url 'documentation:endpoint_detail' endpoint.pk %}" class="button" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Details</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% empty %}
+<div class="card">
+    <h3>No API endpoints found</h3>
+    <p>No endpoints match the current filter criteria. Please add endpoints via the <a href="/admin/documentation/apiendpoint/">admin panel</a> or adjust your filters.</p>
+    
+    <h4 style="margin-top: 2rem;">Available APIs by Default:</h4>
+    <ul style="margin-left: 2rem; margin-top: 1rem;">
+        <li><strong>Products:</strong> <code>/api/products/</code> - Product catalog management</li>
+        <li><strong>Orders:</strong> <code>/api/orders/</code> - Order lifecycle tracking</li>
+        <li><strong>Inventory:</strong> <code>/api/inventory/</code> - Stock management</li>
+        <li><strong>Catalog:</strong> <code>/api/categories/</code>, <code>/api/brands/</code> - Category and brand management</li>
+        <li><strong>Seller:</strong> <code>/api/sellers/</code> - Seller management</li>
+        <li><strong>Analytics:</strong> <code>/api/sales-reports/</code>, <code>/api/product-performance/</code> - Reports and analytics</li>
+    </ul>
+    
+    <h4 style="margin-top: 2rem;">SOAP Services:</h4>
+    <ul style="margin-left: 2rem; margin-top: 1rem;">
+        <li><code>/soap/products/</code> - Product SOAP service</li>
+        <li><code>/soap/orders/</code> - Orders SOAP service</li>
+        <li><code>/soap/inventory/</code> - Inventory SOAP service</li>
+        <li><code>/soap/catalog/</code> - Catalog SOAP service</li>
+        <li><code>/soap/seller/</code> - Seller SOAP service</li>
+        <li><code>/soap/analytics/</code> - Analytics SOAP service</li>
+    </ul>
+</div>
+{% endfor %}
+
+<div class="card">
+    <h2>Quick Examples</h2>
+    
+    <h3>REST API Example</h3>
+    <h4>Creating a Product:</h4>
+    <pre><code>POST /api/products/
+Content-Type: application/json
+
+{
+  "name": "Sample Product",
+  "sku": "SKU001",
+  "description": "Product description",
+  "price": 99.99,
+  "mrp": 120.00,
+  "category": "Electronics",
+  "brand": "BrandName",
+  "weight": 0.5
+}</code></pre>
+    
+    <h3 style="margin-top: 2rem;">SOAP API Example</h3>
+    <h4>Listing Products:</h4>
+    <pre><code>&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+                  xmlns:prod="http://product.soap.blinkit"&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;prod:list_products/&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
+</div>
+{% endblock %}

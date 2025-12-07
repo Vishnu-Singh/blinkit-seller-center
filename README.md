@@ -4,7 +4,7 @@ A full-fledged Django project implementing Blinkit Seller Center APIs with both 
 
 ## Project Structure
 
-The application is organized into 6 Django apps based on API classification:
+The application is organized into 7 Django apps based on API classification:
 
 1. **Products** - Product management
 2. **Orders** - Order management
@@ -12,15 +12,17 @@ The application is organized into 6 Django apps based on API classification:
 4. **Catalog** - Category and brand management
 5. **Seller** - Seller profile management
 6. **Analytics** - Sales reports and analytics
+7. **Documentation** - Interactive documentation portal
 
 ## Features
 
 - ✅ Complete REST API implementation using Django REST Framework
-- ✅ Complete SOAP API implementation using Spyne
+- ✅ Complete SOAP API implementation using custom lxml-based solution
 - ✅ Full CRUD operations for all resources
 - ✅ Advanced filtering, searching, and ordering
 - ✅ Django Admin interface for all models
-- ✅ Comprehensive API documentation
+- ✅ Interactive web-based documentation portal
+- ✅ Comprehensive API documentation with examples
 
 ## Installation
 
@@ -40,15 +42,39 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-4. Create a superuser (for admin access):
+4. Populate documentation (optional but recommended):
+```bash
+python manage.py populate_docs
+```
+
+5. Create a superuser (for admin access):
 ```bash
 python manage.py createsuperuser
 ```
 
-5. Run the development server:
+6. Run the development server:
 ```bash
 python manage.py runserver
 ```
+
+## Quick Access
+
+- **Documentation Portal**: http://localhost:8000/docs/
+- **REST API**: http://localhost:8000/api/
+- **SOAP API**: http://localhost:8000/soap/
+- **Admin Panel**: http://localhost:8000/admin/
+
+## Documentation Portal
+
+The project includes an interactive web-based documentation portal accessible at `/docs/` with the following sections:
+
+- **Home** - Overview and quick statistics
+- **Setup Guide** - Step-by-step installation instructions
+- **API Documentation** - Complete API reference with examples
+- **Project Structure** - Architecture and technology stack
+- **Changelog** - Version history and changes
+
+Access the documentation at: http://localhost:8000/docs/
 
 ## API Endpoints
 

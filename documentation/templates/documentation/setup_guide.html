@@ -1,0 +1,126 @@
+{% extends 'documentation/base.html' %}
+
+{% block title %}Setup Guide - Blinkit Seller Center Documentation{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Setup Guide</h2>
+    <p>Follow these steps to set up the Blinkit Seller Center project on your local machine.</p>
+</div>
+
+{% for step in steps %}
+<div class="card">
+    <h2>Step {{ step.order }}: {{ step.title }} {% if step.is_required %}<span style="color: #e74c3c; font-size: 0.8em;">(Required)</span>{% endif %}</h2>
+    <p>{{ step.description|linebreaks }}</p>
+    
+    {% if step.command %}
+    <h3 style="margin-top: 1rem;">Command:</h3>
+    <pre><code>{{ step.command }}</code></pre>
+    {% endif %}
+</div>
+{% empty %}
+<div class="card">
+    <h3>Default Setup Instructions</h3>
+    
+    <h4>1. Clone the Repository</h4>
+    <pre><code>git clone https://github.com/Vishnu-Singh/blinkit-seller-center.git
+cd blinkit-seller-center</code></pre>
+    
+    <h4>2. Install Dependencies</h4>
+    <pre><code>pip install -r requirements.txt</code></pre>
+    
+    <h4>3. Run Database Migrations</h4>
+    <pre><code>python manage.py migrate</code></pre>
+    
+    <h4>4. Create a Superuser (Optional)</h4>
+    <pre><code>python manage.py createsuperuser</code></pre>
+    
+    <h4>5. Start the Development Server</h4>
+    <pre><code>python manage.py runserver</code></pre>
+    
+    <h4>6. Access the Application</h4>
+    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+        <li>Documentation: <a href="http://localhost:8000/docs/">http://localhost:8000/docs/</a></li>
+        <li>REST API: <a href="http://localhost:8000/api/">http://localhost:8000/api/</a></li>
+        <li>SOAP API: <a href="http://localhost:8000/soap/">http://localhost:8000/soap/</a></li>
+        <li>Admin Panel: <a href="http://localhost:8000/admin/">http://localhost:8000/admin/</a></li>
+    </ul>
+    
+    <h4>7. Run Tests (Optional)</h4>
+    <pre><code>python test_apis.py</code></pre>
+</div>
+{% endfor %}
+
+<div class="card">
+    <h2>System Requirements</h2>
+    <ul style="margin-left: 2rem;">
+        <li><strong>Python:</strong> 3.10 or higher</li>
+        <li><strong>pip:</strong> Latest version</li>
+        <li><strong>Database:</strong> SQLite (default) or PostgreSQL/MySQL</li>
+        <li><strong>OS:</strong> Windows, macOS, or Linux</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h2>Dependencies</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Django</td>
+                <td>6.0</td>
+                <td>Web framework</td>
+            </tr>
+            <tr>
+                <td>djangorestframework</td>
+                <td>3.16.1</td>
+                <td>REST API framework</td>
+            </tr>
+            <tr>
+                <td>django-filter</td>
+                <td>25.2</td>
+                <td>Advanced filtering</td>
+            </tr>
+            <tr>
+                <td>lxml</td>
+                <td>6.0.2</td>
+                <td>XML processing for SOAP</td>
+            </tr>
+            <tr>
+                <td>zeep</td>
+                <td>4.3.2</td>
+                <td>SOAP client library</td>
+            </tr>
+            <tr>
+                <td>defusedxml</td>
+                <td>0.7.1</td>
+                <td>Secure XML parsing</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h2>Troubleshooting</h2>
+    <h3>Common Issues</h3>
+    
+    <h4>Issue: ModuleNotFoundError</h4>
+    <p><strong>Solution:</strong> Make sure all dependencies are installed:</p>
+    <pre><code>pip install -r requirements.txt</code></pre>
+    
+    <h4>Issue: Port 8000 already in use</h4>
+    <p><strong>Solution:</strong> Run the server on a different port:</p>
+    <pre><code>python manage.py runserver 8080</code></pre>
+    
+    <h4>Issue: Database migration errors</h4>
+    <p><strong>Solution:</strong> Delete the database and run migrations again:</p>
+    <pre><code>rm db.sqlite3
+python manage.py migrate</code></pre>
+</div>
+{% endblock %}

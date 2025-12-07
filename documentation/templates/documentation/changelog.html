@@ -1,0 +1,100 @@
+{% extends 'documentation/base.html' %}
+
+{% block title %}Changelog - Blinkit Seller Center{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Changelog</h2>
+    <p>Track all changes, updates, and new features in the Blinkit Seller Center project.</p>
+    
+    <div class="filter-section">
+        <form method="get" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <select name="version" onchange="this.form.submit()">
+                <option value="">All Versions</option>
+                {% for version in versions %}
+                <option value="{{ version }}">v{{ version }}</option>
+                {% endfor %}
+            </select>
+            
+            <select name="type" onchange="this.form.submit()">
+                <option value="">All Types</option>
+                {% for type in change_types %}
+                <option value="{{ type }}">{{ type|title }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+</div>
+
+{% regroup changes by version as version_groups %}
+
+{% for version_group in version_groups %}
+<div class="card">
+    <h2>Version {{ version_group.grouper }}</h2>
+    
+    {% for change in version_group.list %}
+    <div style="margin-bottom: 2rem; padding: 1rem; background-color: #f8f9fa; border-radius: 4px; border-left: 4px solid 
+        {% if change.change_type == 'feature' %}#3498db
+        {% elif change.change_type == 'enhancement' %}#2ecc71
+        {% elif change.change_type == 'bugfix' %}#f39c12
+        {% elif change.change_type == 'breaking' %}#e74c3c
+        {% else %}#95a5a6{% endif %};">
+        
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+            <div>
+                <span class="badge" style="background-color: 
+                    {% if change.change_type == 'feature' %}#e3f2fd; color: #1976d2
+                    {% elif change.change_type == 'enhancement' %}#e8f5e9; color: #2e7d32
+                    {% elif change.change_type == 'bugfix' %}#fff3e0; color: #e65100
+                    {% elif change.change_type == 'breaking' %}#ffebee; color: #c62828
+                    {% else %}#eceff1; color: #455a64{% endif %};">
+                    {{ change.change_type|upper }}
+                </span>
+                {% if change.app_affected %}
+                <span class="badge" style="background-color: #f3e5f5; color: #7b1fa2;">{{ change.app_affected|title }}</span>
+                {% endif %}
+            </div>
+            <span style="color: #666; font-size: 0.875rem;">{{ change.release_date|date:"M d, Y" }}</span>
+        </div>
+        
+        <h3 style="margin: 0.5rem 0;">{{ change.title }}</h3>
+        <p style="margin: 0;">{{ change.description|linebreaks }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% empty %}
+<div class="card">
+    <h3>No changes recorded yet</h3>
+    <p>The changelog is empty. Add changes via the <a href="/admin/documentation/changelog/">admin panel</a>.</p>
+    
+    <h4 style="margin-top: 2rem;">Initial Release - v1.0.0</h4>
+    <ul style="margin-left: 2rem; margin-top: 1rem;">
+        <li><strong>Feature:</strong> Complete Django 6.0 project setup</li>
+        <li><strong>Feature:</strong> 6 Django apps (products, orders, inventory, catalog, seller, analytics)</li>
+        <li><strong>Feature:</strong> REST API with 47+ endpoints</li>
+        <li><strong>Feature:</strong> SOAP API with 6 service endpoints</li>
+        <li><strong>Feature:</strong> Django Admin for all models</li>
+        <li><strong>Feature:</strong> Comprehensive documentation</li>
+        <li><strong>Feature:</strong> Automated testing script</li>
+    </ul>
+</div>
+{% endfor %}
+
+{% if is_paginated %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        {% if page_obj.has_previous %}
+        <a href="?page=1" class="button">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="button">Previous</a>
+        {% endif %}
+        
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="button">Next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="button">Last</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

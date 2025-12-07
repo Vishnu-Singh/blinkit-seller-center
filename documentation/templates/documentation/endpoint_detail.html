@@ -1,0 +1,97 @@
+{% extends 'documentation/base.html' %}
+
+{% block title %}{{ endpoint.name }} - API Documentation{% endblock %}
+
+{% block content %}
+<div class="card">
+    <a href="{% url 'documentation:api_docs' %}" style="text-decoration: none; color: #3498db;">← Back to API Documentation</a>
+    
+    <h2 style="margin-top: 1rem;">{{ endpoint.name }}</h2>
+    
+    <div style="margin: 1rem 0;">
+        <span class="badge badge-{{ endpoint.protocol|lower }}">{{ endpoint.protocol }}</span>
+        <span class="badge badge-{{ endpoint.method|lower }}">{{ endpoint.method }}</span>
+        <span class="badge" style="background-color: #e8f5e9; color: #2e7d32;">{{ endpoint.app_name|title }}</span>
+    </div>
+    
+    <h3>Endpoint</h3>
+    <pre><code>{{ endpoint.method }} {{ endpoint.path }}</code></pre>
+    
+    <h3>Description</h3>
+    <p>{{ endpoint.description|linebreaks }}</p>
+    
+    {% if endpoint.parameters %}
+    <h3>Parameters</h3>
+    <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 4px;">
+        {{ endpoint.parameters|linebreaks }}
+    </div>
+    {% endif %}
+    
+    {% if endpoint.request_example %}
+    <h3>Request Example</h3>
+    <pre><code>{{ endpoint.request_example }}</code></pre>
+    {% endif %}
+    
+    {% if endpoint.response_example %}
+    <h3>Response Example</h3>
+    <pre><code>{{ endpoint.response_example }}</code></pre>
+    {% endif %}
+    
+    <h3>Additional Information</h3>
+    <table>
+        <tr>
+            <th style="width: 200px;">Protocol</th>
+            <td>{{ endpoint.protocol }}</td>
+        </tr>
+        <tr>
+            <th>Method</th>
+            <td>{{ endpoint.method }}</td>
+        </tr>
+        <tr>
+            <th>App</th>
+            <td>{{ endpoint.app_name|title }}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{% if endpoint.is_active %}<span style="color: #2e7d32;">Active</span>{% else %}<span style="color: #c62828;">Inactive</span>{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Last Updated</th>
+            <td>{{ endpoint.updated_at|date:"F d, Y H:i" }}</td>
+        </tr>
+    </table>
+</div>
+
+{% if endpoint.protocol == 'SOAP' %}
+<div class="card">
+    <h2>SOAP Usage</h2>
+    <p>To use this SOAP endpoint, you'll need a SOAP client. Here's how to access it:</p>
+    
+    <h3>WSDL Location</h3>
+    <pre><code>{{ endpoint.path }}?wsdl</code></pre>
+    
+    <h3>Example with Python (zeep)</h3>
+    <pre><code>from zeep import Client
+
+client = Client('{{ endpoint.path }}?wsdl')
+result = client.service.{{ endpoint.name }}()</code></pre>
+</div>
+{% else %}
+<div class="card">
+    <h2>REST Usage</h2>
+    
+    <h3>Using cURL</h3>
+    <pre><code>curl -X {{ endpoint.method }} {{ endpoint.path }} \
+  -H "Content-Type: application/json"{% if endpoint.request_example %} \
+  -d '{{ endpoint.request_example|truncatewords:10 }}'{% endif %}</code></pre>
+    
+    <h3>Using Python (requests)</h3>
+    <pre><code>import requests
+
+url = "{{ endpoint.path }}"
+{% if endpoint.method == 'GET' %}response = requests.get(url){% else %}data = {{ endpoint.request_example|default:"{}"|truncatewords:10 }}
+response = requests.{{ endpoint.method|lower }}(url, json=data){% endif %}
+print(response.json())</code></pre>
+</div>
+{% endif %}
+{% endblock %}

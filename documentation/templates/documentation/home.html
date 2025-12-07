@@ -1,0 +1,75 @@
+{% extends 'documentation/base.html' %}
+
+{% block title %}Home - Blinkit Seller Center Documentation{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Welcome to Blinkit Seller Center Documentation</h2>
+    <p>This is a comprehensive documentation portal for the Blinkit Seller Center API project. Here you'll find everything you need to get started, understand the APIs, and track changes.</p>
+    
+    <div class="stats">
+        <div class="stat-card">
+            <h3>{{ total_endpoints }}</h3>
+            <p>Total API Endpoints</p>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <h3>{{ rest_endpoints }}</h3>
+            <p>REST API Endpoints</p>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <h3>{{ soap_endpoints }}</h3>
+            <p>SOAP API Endpoints</p>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <h3>6</h3>
+            <p>Django Apps</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Quick Links</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+        <div>
+            <h3>📚 <a href="{% url 'documentation:setup' %}">Setup Guide</a></h3>
+            <p>Step-by-step instructions to set up the project locally</p>
+        </div>
+        <div>
+            <h3>🔌 <a href="{% url 'documentation:api_docs' %}">API Documentation</a></h3>
+            <p>Complete reference for all REST and SOAP APIs</p>
+        </div>
+        <div>
+            <h3>🏗️ <a href="{% url 'documentation:structure' %}">Project Structure</a></h3>
+            <p>Understanding the architecture and organization</p>
+        </div>
+        <div>
+            <h3>📝 <a href="{% url 'documentation:changelog' %}">Changelog</a></h3>
+            <p>Track all changes, updates, and new features</p>
+        </div>
+    </div>
+</div>
+
+{% if latest_version %}
+<div class="card">
+    <h2>Latest Release</h2>
+    <p><strong>Version {{ latest_version.version }}</strong> - {{ latest_version.release_date }}</p>
+    <p>{{ latest_version.title }}</p>
+    <a href="{% url 'documentation:changelog' %}" class="button" style="margin-top: 1rem;">View All Changes</a>
+</div>
+{% endif %}
+
+<div class="card">
+    <h2>About This Project</h2>
+    <p>The Blinkit Seller Center is a comprehensive Django 6.0 application that provides both REST and SOAP APIs for managing various aspects of an e-commerce seller platform. The project is organized into domain-specific apps, each handling a specific business function.</p>
+    
+    <h3 style="margin-top: 1.5rem;">Key Features</h3>
+    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+        <li>Complete REST API implementation using Django REST Framework</li>
+        <li>SOAP API endpoints with WSDL generation</li>
+        <li>Advanced filtering, searching, and pagination</li>
+        <li>Comprehensive admin interface</li>
+        <li>Well-structured and modular codebase</li>
+        <li>Detailed API documentation</li>
+    </ul>
+</div>
+{% endblock %}

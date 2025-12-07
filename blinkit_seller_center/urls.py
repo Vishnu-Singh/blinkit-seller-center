@@ -26,6 +26,9 @@ from analytics.soap import analytics_soap_service
 urlpatterns = [
     path('admin/', admin.site.urls),
     
+    # Documentation
+    path('docs/', include('documentation.urls')),
+    
     # REST API endpoints
     path('api/', include('products.urls')),
     path('api/', include('orders.urls')),
