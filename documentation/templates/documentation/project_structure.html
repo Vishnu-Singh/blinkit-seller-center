@@ -1,0 +1,205 @@
+{% extends 'documentation/base.html' %}
+
+{% block title %}Project Structure - Blinkit Seller Center{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Project Structure</h2>
+    <p>Understanding the architecture and organization of the Blinkit Seller Center project.</p>
+</div>
+
+<div class="card">
+    <h2>Django Apps</h2>
+    <p>The project is organized into domain-specific apps, each handling a specific business function.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>App Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in structure.Apps %}
+            <tr>
+                <td><strong>{{ app.name }}</strong></td>
+                <td>{{ app.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h2>Technologies & Dependencies</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Technology</th>
+                <th>Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tech in structure.Technologies %}
+            <tr>
+                <td><strong>{{ tech.name }}</strong></td>
+                <td>{{ tech.purpose }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h2>Directory Structure</h2>
+    <pre><code>blinkit-seller-center/
+├── manage.py                    # Django management script
+├── requirements.txt             # Project dependencies
+├── README.md                    # Main documentation
+├── API_DOCUMENTATION.md         # Detailed API documentation
+├── PROJECT_SUMMARY.md           # Implementation summary
+├── test_apis.py                 # API testing script
+├── .gitignore                   # Git ignore file
+├── db.sqlite3                   # SQLite database
+│
+├── blinkit_seller_center/       # Main project directory
+│   ├── __init__.py
+│   ├── settings.py              # Django settings
+│   ├── urls.py                  # Main URL configuration
+│   ├── wsgi.py                  # WSGI application
+│   └── asgi.py                  # ASGI application
+│
+├── products/                    # Products app
+│   ├── models.py                # Product model
+│   ├── views.py                 # REST API views
+│   ├── serializers.py           # DRF serializers
+│   ├── soap.py                  # SOAP service
+│   ├── urls.py                  # URL routing
+│   └── admin.py                 # Django admin config
+│
+├── orders/                      # Orders app
+│   ├── models.py                # Order & OrderItem models
+│   ├── views.py                 # REST API views
+│   ├── serializers.py           # DRF serializers
+│   ├── soap.py                  # SOAP service
+│   ├── urls.py                  # URL routing
+│   └── admin.py                 # Django admin config
+│
+├── inventory/                   # Inventory app
+│   ├── models.py                # Inventory model
+│   ├── views.py                 # REST API views
+│   ├── serializers.py           # DRF serializers
+│   ├── soap.py                  # SOAP service
+│   ├── urls.py                  # URL routing
+│   └── admin.py                 # Django admin config
+│
+├── catalog/                     # Catalog app
+│   ├── models.py                # Category & Brand models
+│   ├── views.py                 # REST API views
+│   ├── serializers.py           # DRF serializers
+│   ├── soap.py                  # SOAP service
+│   ├── urls.py                  # URL routing
+│   └── admin.py                 # Django admin config
+│
+├── seller/                      # Seller app
+│   ├── models.py                # Seller model
+│   ├── views.py                 # REST API views
+│   ├── serializers.py           # DRF serializers
+│   ├── soap.py                  # SOAP service
+│   ├── urls.py                  # URL routing
+│   └── admin.py                 # Django admin config
+│
+├── analytics/                   # Analytics app
+│   ├── models.py                # SalesReport & ProductPerformance models
+│   ├── views.py                 # REST API views
+│   ├── serializers.py           # DRF serializers
+│   ├── soap.py                  # SOAP service
+│   ├── urls.py                  # URL routing
+│   └── admin.py                 # Django admin config
+│
+└── documentation/               # Documentation app
+    ├── models.py                # Documentation models
+    ├── views.py                 # Documentation views
+    ├── urls.py                  # URL routing
+    ├── admin.py                 # Django admin config
+    └── templates/               # HTML templates
+        └── documentation/
+            ├── base.html
+            ├── home.html
+            ├── setup_guide.html
+            ├── api_docs.html
+            ├── endpoint_detail.html
+            ├── changelog.html
+            └── project_structure.html</code></pre>
+</div>
+
+<div class="card">
+    <h2>Database Models</h2>
+    <p>The project includes 12 database models across 7 apps:</p>
+    
+    <h3>Products App</h3>
+    <ul style="margin-left: 2rem;">
+        <li><strong>Product:</strong> Product catalog with SKU, pricing, and inventory status</li>
+    </ul>
+    
+    <h3>Orders App</h3>
+    <ul style="margin-left: 2rem;">
+        <li><strong>Order:</strong> Order information and customer details</li>
+        <li><strong>OrderItem:</strong> Individual items in an order</li>
+    </ul>
+    
+    <h3>Inventory App</h3>
+    <ul style="margin-left: 2rem;">
+        <li><strong>Inventory:</strong> Stock levels and warehouse locations</li>
+    </ul>
+    
+    <h3>Catalog App</h3>
+    <ul style="margin-left: 2rem;">
+        <li><strong>Category:</strong> Product categories with hierarchy</li>
+        <li><strong>Brand:</strong> Product brands</li>
+    </ul>
+    
+    <h3>Seller App</h3>
+    <ul style="margin-left: 2rem;">
+        <li><strong>Seller:</strong> Seller profiles with GSTIN/PAN validation</li>
+    </ul>
+    
+    <h3>Analytics App</h3>
+    <ul style="margin-left: 2rem;">
+        <li><strong>SalesReport:</strong> Daily sales metrics</li>
+        <li><strong>ProductPerformance:</strong> Product-level analytics</li>
+    </ul>
+    
+    <h3>Documentation App</h3>
+    <ul style="margin-left: 2rem;">
+        <li><strong>APIEndpoint:</strong> API endpoint documentation</li>
+        <li><strong>Changelog:</strong> Version history and changes</li>
+        <li><strong>SetupStep:</strong> Setup instructions</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h2>API Architecture</h2>
+    
+    <h3>REST API</h3>
+    <p>Built using Django REST Framework with the following features:</p>
+    <ul style="margin-left: 2rem;">
+        <li>ViewSets for CRUD operations</li>
+        <li>Model serializers for data validation</li>
+        <li>Advanced filtering via django-filter</li>
+        <li>Search across multiple fields</li>
+        <li>Custom actions for business logic</li>
+        <li>Pagination support</li>
+    </ul>
+    
+    <h3>SOAP API</h3>
+    <p>Custom implementation using lxml with:</p>
+    <ul style="margin-left: 2rem;">
+        <li>SOAP 1.1 protocol</li>
+        <li>WSDL generation</li>
+        <li>XML request/response handling</li>
+        <li>Fault handling</li>
+    </ul>
+</div>
+{% endblock %}

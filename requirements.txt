@@ -1,0 +1,6 @@
+Django==6.0
+djangorestframework==3.16.1
+django-filter==25.2
+lxml==6.0.2
+defusedxml==0.7.1
+zeep==4.3.2
